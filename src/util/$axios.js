@@ -21,8 +21,9 @@ instance.interceptors.response.use((response) => {
     message.error(response.data.msg)
     return Promise.reject(response.data)
   }
-  
-  message.success(response.data.msg)
+  if(response.data.msg !== '获取信息成功') {
+    message.success(response.data.msg)
+  }
   return response.data
 }, (error) => {
   // 对响应错误做点什么

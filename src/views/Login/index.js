@@ -3,9 +3,16 @@ import Particles from './Particles'
 import { Form, Input, Button } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import { login } from '../../api/userApi'
+import { connect } from 'react-redux'
 import cookies from 'react-cookies'
 import style from './login.module.css'
 class Login extends Component {
+
+  componentDidMount() {
+    this.props.delUserInfo()
+  }
+  
+
   onFinish = (values) => {
     console.log(this.timer);
     
@@ -69,4 +76,12 @@ class Login extends Component {
   }
 }
 
-export default Login
+const mapDispatchToProps = {
+  delUserInfo () {
+    return {
+      type: 'get_userInfo',
+      payload: {}
+    }
+  }
+}
+export default connect(null,mapDispatchToProps)(Login)

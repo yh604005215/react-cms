@@ -3,6 +3,7 @@ import { Provider } from 'react-redux'
 import RouterView from './router'
 import store from './store/index'
 import 'antd/dist/antd.css'
+import './assets/style/reset.css'
 function App() {
   return <Provider store={store}>
     <RouterView />
