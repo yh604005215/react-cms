@@ -5,8 +5,9 @@ export default (state = {
   switch (type) {
     case 'get_userInfo':
       
-      return payload
-  
+      return {...state, ...payload}
+    case 'del_userInfo':
+      return {}
     default:
       return state
   }

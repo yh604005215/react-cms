@@ -1,5 +1,4 @@
 import {
-  UploadOutlined,
   TeamOutlined,
   HomeOutlined,
   BarsOutlined
@@ -15,7 +14,7 @@ export default [
   {
     title: '用户管理',
     path: '/user-manage',
-    permission: 3,
+    permission: 2,
     icon: BarsOutlined,
     children: [
       {

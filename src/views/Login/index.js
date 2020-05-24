@@ -79,8 +79,7 @@ class Login extends Component {
 const mapDispatchToProps = {
   delUserInfo () {
     return {
-      type: 'get_userInfo',
-      payload: {}
+      type: 'del_userInfo'
     }
   }
 }

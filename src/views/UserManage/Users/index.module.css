@@ -1,0 +1,3 @@
+.table :global(.ant-table-layout-fixed)  {
+  height: 400px !important;
+}

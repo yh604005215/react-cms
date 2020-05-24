@@ -9,15 +9,3 @@
   cursor: pointer;
   position: relative;
 }
-
-.text {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  left: 0;
-  text-align: center;
-  display: none;
-}
-.avatar:hover .text{
-  display: block;
-}

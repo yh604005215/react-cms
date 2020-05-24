@@ -21,13 +21,15 @@ instance.interceptors.response.use((response) => {
     message.error(response.data.msg)
     return Promise.reject(response.data)
   }
-  if(response.data.msg !== '获取信息成功') {
+  if(response.data.msg !== '成功') {
     message.success(response.data.msg)
   }
   return response.data
 }, (error) => {
   // 对响应错误做点什么
-  console.log(error)
+  if ( error.response.status === 401 )  {
+    message.error(error.response.data.msg) 
+  }
   return Promise.reject(error)
 })
 

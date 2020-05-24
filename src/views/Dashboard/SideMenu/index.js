@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { Menu, Layout } from 'antd'
 import { withRouter } from 'react-router'
+import { connect } from 'react-redux'
 import menuArr from '../../../router/menuRouter'
 const { Sider } = Layout
 const { SubMenu } = Menu
 class SideMenu extends Component {
 
   renderMenu = (menus) => {
-    const {roleType} = JSON.parse(localStorage.getItem('token'));
+    const {roleType} = this.props.userInfo
     return menus.map(item => {
       if (item.children &&  roleType >= item.permission) {
         return (
@@ -49,4 +50,10 @@ class SideMenu extends Component {
   }
 }
 
-export default withRouter(SideMenu);
+const mapStateProps = (state) =>{
+  return {
+    userInfo: state.userInfo
+  }
+}
+
+export default connect(mapStateProps)(withRouter(SideMenu))
