@@ -5,6 +5,7 @@ import cookies from 'react-cookies'
 import { Table, Avatar, Switch, Button, Input } from 'antd'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import UserForm from './UserForm'
+import UpdateForm from './UpdateForm'
 import style from  './index.module.css'
 const { Search } = Input
 class Users extends Component {
@@ -14,7 +15,8 @@ class Users extends Component {
     visible: false,
     total: null,
     pageNum: 1,
-    pageList: []
+    pageList: [],
+    show: false
   }
 
   componentDidMount () {
@@ -49,6 +51,17 @@ class Users extends Component {
         pageList: [...this.state.pageList, pageNum]
       })
     })
+  }
+
+  handelUpdate (item) {
+    this.setState({
+      show: true
+    })
+    this.refs.updateForm.setValues({
+      userName: item.userName,
+      roleType: ~~item.roleType
+    }, item._id)
+       
   }
 
   handelDel = (userId) => {
@@ -108,6 +121,7 @@ class Users extends Component {
          <Button type="primary" shape="circle"
           icon={<EditOutlined />}
           disabled={item.roleType > 2}
+          onClick={()=>this.handelUpdate(item)}
          />
 
           <Button type="danger"shape="circle"
@@ -155,6 +169,23 @@ class Users extends Component {
           visible={this.state.visible}
           onCancel={()=>this.setState({visible:false})}
           getUserList={this.getUserList}/>
+          <UpdateForm
+          ref="updateForm"
+          visible={this.state.show}
+          onCancel={()=>this.setState({show:false})}
+          getUserList={(userId, values)=>{
+            const userList = this.state.userList.map(item => {
+              if (item._id === userId) {
+                const roleName = ['小编', '管理员', '超级管理员']
+                return {...item, ...values, roleName: roleName[values.roleType - 1]}
+              }
+              return item
+            })
+            this.setState({
+              userList
+            })
+          }}
+          />
       </div>
     );
   }

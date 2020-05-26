@@ -1,17 +1,27 @@
-import React, { Component } from 'react'
-import { Modal, Form, Input, Select } from 'antd'
-import { register } from '../../../api/userApi'
+import React, { Component } from 'react';
+import { Modal, Form, Input, Select, Checkbox } from 'antd'
+import { update } from '../../../api/userApi'
+import cookies from 'react-cookies'
+
 const { Option } = Select
-class UserForm extends Component {
+
+class UpdateForm extends Component {
+
   state = {
-    visible: true,
+    isPassword: false
+  }
+
+  setValues = (values,userId) => {
+    this.refs.form.setFieldsValue(values)
+    this.userId = userId
   }
 
   render() {
     return (
       <Modal
+        forceRender={true}
         visible={this.props.visible}
-        title="添加用户"
+        title="修改用户"
         okText="确定"
         cancelText="取消"
         onCancel={this.props.onCancel}
@@ -19,11 +29,10 @@ class UserForm extends Component {
           this.refs.form
             .validateFields()
             .then((values) => {
+              update(cookies.load('token'), values, this.userId)
               this.refs.form.resetFields()
-              register(values).then(() => {
-                this.props.getUserList()
-                this.props.onCancel()
-              })
+              this.props.getUserList(this.userId, values)
+              this.props.onCancel()
             })
             .catch((info) => {
               console.log('Validate Failed:', info)
@@ -48,7 +57,7 @@ class UserForm extends Component {
           >
             <Input />
           </Form.Item>
-          <Form.Item
+          { this.state.isPassword && <Form.Item
             name="password"
             label="密码"
             rules={[
@@ -59,7 +68,7 @@ class UserForm extends Component {
             ]}
           >
             <Input type="password" />
-          </Form.Item>
+          </Form.Item>}
           <Form.Item
             name="roleType"
             label="角色"
@@ -67,7 +76,7 @@ class UserForm extends Component {
               {
                 required: true,
                 message: '请选择角色',
-              },
+              }
             ]}
           >
             <Select showSearch placeholder="选择一个角色">
@@ -77,9 +86,12 @@ class UserForm extends Component {
             </Select>
           </Form.Item>
         </Form>
+        <Checkbox onChange={()=>this.setState({isPassword:!this.state.isPassword})}>
+          是否修改密码
+        </Checkbox>
       </Modal>
-    )
+    );
   }
 }
 
-export default UserForm
+export default UpdateForm;
